@@ -1,0 +1,9 @@
+```{r}
+install.packages("tidyverse")
+install.packages("lubradate")
+install.packages("janator")
+install.packages("tidycensus")
+install.packages("ggplot2")
+install.packages("wehoop")
+```
+
