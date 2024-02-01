@@ -1,3 +1,5 @@
+Use this file to load packages and do baseline set up things.
+
 ```{r}
 install.packages("tidyverse")
 install.packages("lubradate")
