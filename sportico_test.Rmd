@@ -9,3 +9,12 @@ install.packages("ggplot2")
 install.packages("wehoop")
 ```
 
+```{r}
+# This shows player season data from wehoop
+
+years <-  c(2023, 2022)
+
+seasons <- load_wbb_player_box(seasons = years)
+
+```
+
