@@ -1,0 +1,253 @@
+```{r}
+library(tidyverse)
+library(janitor)
+library(lubridate)
+#install.packages("remotes")
+#remotes::install_github("slu-openGIS/postmastr")
+#library(postmastr)
+library(usdata)
+library(rvest)
+library(ggplot2)
+library(ggalt)
+#install.packages("ggtext")
+library(ggtext)
+library(htmltools)
+```
+
+```{r}
+# Loading data for the seaosns
+logs24 <- read_csv("https://thescoop.org/sports-data-files/wbblogs24.csv")
+logs18_24 <- read_csv("https://www.thescoop.org/sports-data-files/wbblogs1824.csv")
+
+# removing the 2023-2024 from logs_18_24 to avoid duplicates when binding. Final product should have the first few games of 23-24 season.
+logs18_24 <- logs18_24 %>% 
+  filter(Season != "2023-2024")
+
+logs <- bind_rows(logs18_24, logs24)
+
+# Loading player data from 2022-2023
+wbb23_24_rosters <- read_csv("data/wbb_rosters_2023_24.csv")
+wbb22_23_rosters <- read_csv("data/wbb_rosters_2022_23.csv")
+```
+
+The countries that need to be cleaned are "The Netherlands and BOSNIA AND HERZEGOVINA" NOTE: I replaced the 23_24 file with the one Derek updated: this is a link to the file. <https://github.com/Sports-Roster-Data/womens-college-basketball/blob/main/wbb_rosters_2023_24.csv>
+
+```{r}
+wbb22_23_rosters <- wbb22_23_rosters %>% 
+  mutate(
+    country_clean = case_when(
+      country_clean == "THE NETHERLANDS" ~ "NETHERLANDS",
+      country_clean == "BOSNIA AND HERZEGOVINA" ~ "BOSNIA & HERZEGOVINA",
+      TRUE ~ as.character(country_clean)))
+```
+
+Creating power 5 list
+
+```{r}
+power_5 <- c("ACC", "Big 12", "Big Ten", "Pac-12", "SEC")
+```
+
+Filtering for non us players
+
+```{r}
+non_us_22_23 <- wbb22_23_rosters %>%
+filter(country_clean != "USA", division == "I")
+  
+non_us_23_24 <-  wbb23_24_rosters %>% 
+  filter(country_clean != "USA", division == "I")
+
+```
+
+
+```{r}
+#23-24
+teams_with_int_players_23_24 <- non_us_23_24 %>% 
+  group_by(ncaa_id, team, conference) %>% 
+  summarize(int_players = n()) %>% 
+  arrange(desc(int_players))
+
+#22-23
+teams_with_int_players_22_23 <- non_us_22_23 %>% 
+  group_by(ncaa_id, team, conference) %>% 
+  summarize(int_players = n()) %>% 
+  arrange(desc(int_players))
+
+# total players
+total_player_23_24 <-  wbb23_24_rosters %>% 
+  filter(division == "I") %>% 
+  group_by(ncaa_id, team, conference) %>% 
+  summarize(total_players = n()) %>% 
+  arrange((team))
+
+total_player_22_23 <- wbb22_23_rosters %>% 
+  filter(division == "I") %>% 
+  group_by(ncaa_id, team, conference) %>% 
+  summarize(total_players = n()) %>% 
+  arrange((team))
+
+# this shows the missing team from 23-24 is Florida State
+list <- anti_join (total_player_22_23, total_player_23_24, by= "team")
+```
+
+# need to figure out a new way to get a clean version of all players.
+
+# I need to do the left joins in seperate years and then do the mutates for the NA values, then inner joins back together.
+
+```{r}
+ 
+all_players23_24 <- left_join(total_player_23_24, teams_with_int_players_23_24, by = "ncaa_id")
+
+all_players22_23 <- left_join(total_player_22_23, teams_with_int_players_22_23, by = "ncaa_id")
+
+all_players <- inner_join(all_players23_24, all_players22_23, by = "ncaa_id")
+
+```
+
+```{r}
+# cleaning the all_players df
+all_players <- all_players %>% 
+  rename(team = team.x.x,
+         conference = conference.x.x,
+         total_23_24 = total_players.x,
+         int_players_23_24 = int_players.x,
+         total_22_23 = total_players.y,
+         int_players_22_23 = int_players.y) %>% 
+select(ncaa_id, team, conference, int_players_23_24, int_players_22_23, total_23_24, total_22_23, -team.y.x, -team.y.y, -team.y.y)
+
+# fixing NAs
+all_players <- all_players %>%
+  mutate(
+    int_players_23_24 = case_when(
+      is.na(int_players_23_24) ~ 0,
+      TRUE ~ int_players_23_24),
+    int_players_22_23 = case_when(
+      is.na(int_players_22_23) ~ 0,
+      TRUE ~ int_players_22_23))
+```
+
+adding in percentages
+
+```{r}
+# Percentage change doesn't show anything interesting here. Percentages does.
+
+all_players <- all_players %>% 
+  mutate(int_diff = int_players_23_24 - int_players_22_23,
+         int_player_perc_23_24 = int_players_23_24/total_23_24*100,
+         int_player_perc_22_23 = int_players_22_23/total_22_23*100)
+```
+
+
+------- Data Exploration Section -----------
+
+Here I will answer the obvious outstanding questions and try to formulate a story narrative after it.
+
+Which conference has most players
+
+```{r}
+# totals per conf
+conf_counts23_24 <- non_us_23_24 %>% 
+  filter(division == "I") %>% 
+  group_by(conference) %>% 
+  summarize(players_23_24 = n())
+  
+  conf_counts_22_23 <- non_us_22_23 %>% 
+  filter(division == "I") %>% 
+  group_by(conference) %>% 
+  summarize(players_22_23 = n())
+  
+  total_conf <- inner_join(conf_counts23_24, conf_counts_22_23, by = "conference")
+  
+  #internationals
+by_conf <- all_players %>% 
+  group_by(conference) %>% 
+  summarise(int_players_23_24 = sum(int_players_23_24),
+            int_players_22_23 = sum(int_players_22_23))
+#joining
+all_conf <- inner_join(by_conf, total_conf, by="conference")
+
+all_conf <- all_conf %>%  
+  mutate(diff= int_players_23_24 - int_players_22_23,
+         conf_perc_23_24 = int_players_23_24/sum(int_players_23_24)*100,
+         conf_int_perc_22_23 = int_players_22_23/sum(int_players_22_23)*100)
+```
+
+which countries produce the most players
+
+```{r}
+#23-24
+countries_23_24 <- non_us_23_24 %>% 
+    group_by(country_clean) %>% 
+  summarize(int_players = n()) %>% 
+  arrange(desc(int_players))
+
+#22-23
+countries_22_23 <- non_us_22_23 %>% 
+    group_by(country_clean) %>% 
+  summarize(int_players = n()) %>% 
+  arrange(desc(int_players))
+
+# joining
+total_country <- inner_join(countries_23_24, countries_22_23, by = "country_clean")
+
+total_country <- total_country %>% 
+  rename(int_players_23_24 = int_players.x,
+         int_players_22_23 = int_players.y) %>% 
+  mutate(diff = int_players_23_24 - int_players_22_23,
+         perc_23_24 = int_players_23_24/sum(int_players_23_24)*100,
+         perc_22_23 = int_players_22_23/sum(int_players_22_23)*100,
+  perc_change = ((int_players_23_24 - int_players_22_23) / int_players_22_23) * 100)
+
+# per team
+non_us_22_23 %>% 
+  filter(team == "South Florida") %>% 
+  group_by(country_clean) %>% 
+  summarize(int_players = n()) %>% 
+  arrange(desc(int_players))
+
+
+```
+
+
+--------------- Labeling tournament teams -------------------
+Steps
+- on the `all_players` df, add two columns. One called ncaat23_24 and one called ncaat22_23.
+- write a case_when to put y if they were a tournament team and a n if they were not in 2023.
+- Then filter teams that were a tourney team and had >0 international players.
+
+```{r}
+# 22-23 tournament teams
+
+ncaat_22_23 <- c("South Carolina", "Maryland", "Notre Dame", "UCLA", "Oklahoma", "Creighton", "Arizona", "South Florida", "Marquette", "West Virginia",
+                 "Illinois", "Mississippi State", "Portland", "Sacramento State", "Southern Utah", "Holy Cross", "Norfolk State", "Virginia Tech",
+                 "UConn", "Ohio State", "Tennessee", "Iowa State", "North Carolina", "Baylor", "USC", "South Dakota State", "Alabama", "Purdue",
+                 "St. John’s", "Toledo", "Saint Louis", "James Madison", "Vermont", "Chattanooga", "Indiana", "Utah", "LSU", "Villanova",
+                 "Washington State", "Michigan", "NC State", "Oklahoma State", "Miami", "Princeton", "UNLV", "Florida Gulf Coast",
+                 "Cleveland State", "Hawaii", "Gardner-Webb", "Tennessee Tech", "Monmouth", "Stanford", "Iowa", "Duke", "Texas", "Louisville",
+                 "Colorado", "Florida State", "Ole Miss", "Gonzaga", "Georgia", "Middle Tennessee", "Drake", "East Carolina", "Iona", "Southern Louisiana",
+                 "Southern", "Sacred Heart")
+
+```
+
+
+
+```{r}
+# putting a y or n if a school was a tourney team in 22-23
+ncaat_teams <- all_players %>%
+  mutate(tourny_team_22_23 = case_when(
+    team %in% ncaat_22_23 ~ "y",
+    TRUE ~ "n"
+  ))
+
+#Filtering to see what the tourney teams looked like w internationals
+# produced 63 teams... need to figure out how to get to 68
+# teams changed: Miami, 
+
+
+ncaat_teams %>% 
+  filter(tourny_team_22_23 == "y") %>% 
+  select(team, conference, int_players_22_23, total_22_23, int_players_22_23, int_player_perc_22_23) %>% 
+  arrange(desc(int_player_perc_22_23))
+
+```
+
+
