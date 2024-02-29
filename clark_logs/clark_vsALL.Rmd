@@ -1,0 +1,28 @@
+```{r}
+# libraries
+library(tidyverse)
+library(lubridate)
+library(janitor)
+```
+
+What do I want to accomplish?
+- I want to see how Iowa guard Caitlin Clark performed against other teams during her career.
+- We can have this data timely for when the tournament comes around.
+
+Cleaning Steps
+- Import data
+- Clean columns and remove the bottom one
+- label home and away in the proper column
+- do group_by and summarize on the important data points
+
+Questions to answer
+- What team does Caitlin Clark perform best against
+- How many points (total points) has she scored against each team (and avg)
+- How many assists, rebounds 3PM, 3p% etc... other relevant stats
+- What conference does she do best against?
+
+
+```{r}
+
+```
+
