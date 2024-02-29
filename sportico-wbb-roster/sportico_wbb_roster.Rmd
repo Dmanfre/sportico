@@ -219,7 +219,7 @@ Steps
 
 ncaat_22_23 <- c("South Carolina", "Maryland", "Notre Dame", "UCLA", "Oklahoma", "Creighton", "Arizona", "South Florida", "Marquette", "West Virginia",
                  "Illinois", "Mississippi State", "Portland", "Sacramento State", "Southern Utah", "Holy Cross", "Norfolk State", "Virginia Tech",
-                 "UConn", "Ohio State", "Tennessee", "Iowa State", "North Carolina", "Baylor", "USC", "South Dakota State", "Alabama", "Purdue",
+                 "UConn", "Ohio State", "Tennessee", "Iowa State", "North Carolina", "Baylor", "Southern Cal", "South Dakota State", "Alabama", "Purdue",
                  "St. John’s", "Toledo", "Saint Louis", "James Madison", "Vermont", "Chattanooga", "Indiana", "Utah", "LSU", "Villanova",
                  "Washington State", "Michigan", "NC State", "Oklahoma State", "Miami", "Princeton", "UNLV", "Florida Gulf Coast",
                  "Cleveland State", "Hawaii", "Gardner-Webb", "Tennessee Tech", "Monmouth", "Stanford", "Iowa", "Duke", "Texas", "Louisville",
