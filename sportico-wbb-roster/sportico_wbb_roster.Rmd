@@ -223,11 +223,10 @@ ncaat_22_23 <- c("South Carolina", "Maryland", "Notre Dame", "UCLA", "Oklahoma",
                  "St. John’s", "Toledo", "Saint Louis", "James Madison", "Vermont", "Chattanooga", "Indiana", "Utah", "LSU", "Villanova",
                  "Washington State", "Michigan", "NC State", "Oklahoma State", "Miami", "Princeton", "UNLV", "Florida Gulf Coast",
                  "Cleveland State", "Hawaii", "Gardner-Webb", "Tennessee Tech", "Monmouth", "Stanford", "Iowa", "Duke", "Texas", "Louisville",
-                 "Colorado", "Florida State", "Ole Miss", "Gonzaga", "Georgia", "Middle Tennessee", "Drake", "East Carolina", "Iona", "Southern Louisiana",
-                 "Southern", "Sacred Heart")
+                 "Colorado", "Florida State", "Mississippi", "Gonzaga", "Georgia", "Middle Tennessee", "Drake", "East Carolina", "Iona", "Southern Louisiana",
+                 "Southern", "Sacred Heart", "Southeastern Louisiana")
 
 ```
-
 
 
 ```{r}
@@ -239,11 +238,7 @@ ncaat_teams <- all_players %>%
   ))
 
 #Filtering to see what the tourney teams looked like w internationals
-# produced 63 teams... need to figure out how to get to 68
-# teams changed: Miami, 
-
-
-ncaat_teams %>% 
+ncaa_yes22_23 <- ncaat_teams %>% 
   filter(tourny_team_22_23 == "y") %>% 
   select(team, conference, int_players_22_23, total_22_23, int_players_22_23, int_player_perc_22_23) %>% 
   arrange(desc(int_player_perc_22_23))
