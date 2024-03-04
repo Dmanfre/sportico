@@ -20,9 +20,60 @@ Questions to answer
 - How many points (total points) has she scored against each team (and avg)
 - How many assists, rebounds 3PM, 3p% etc... other relevant stats
 - What conference does she do best against?
+- How does she do against only Big Ten teams. 
 
 
 ```{r}
+#import data
+clark_logs <- read_csv("data/clark_logs.csv")
 
 ```
+
+----------- Cleaning Data -----------------
+
+```{r}
+#cleaning names and columns
+clark_logs_cleaned <- clark_logs %>% 
+  clean_names() %>% 
+  rename(home_away = x5,
+         W_L = x8,
+         two_ptm = x2p,
+         two_pta = x2pa,
+         two_fg_perc = x2p_percent,
+         three_pm = x3p,
+         three_pa = x3pa,
+         three_fg_perc = x3p_percent) %>% 
+  slice(1:129)
+
+#replace NA in home_away with H
+
+clark_logs_cleaned <- clark_logs_cleaned %>%
+  mutate(home_away = case_when(
+    is.na(home_away) ~ "H",
+    TRUE ~ home_away
+  ))
+
+```
+
+------------ Data exploration ---------------
+
+### Aggregating the points
+
+```{r}
+
+clark_logs_cleaned %>% 
+  group_by(opponent) %>% 
+  summarize(total_minutes = sum (mp),
+            total_points = sum(pts),
+            total_reb = sum(trb),
+            total_ast = sum(ast),
+            
+            ) %>% 
+  arrange(desc(total_minutes))
+
+```
+
+
+
+
 
