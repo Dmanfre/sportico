@@ -59,7 +59,12 @@ Clark games against each team
 
 ```{r}
 
+#creating a b10 list
+
+big10 <- c("Nebraska", "Minnesota", "Illinois", "Northwestern", "Wisconsin", "Indiana", "Purdue", "Ohio State", "Michigan", "Michigan State", "Penn State", "Rutgers", "Maryland")
+
 games_per_team <- clark_logs_cleaned %>% 
+  filter(opponent %in% big10) %>% 
   group_by(opponent) %>% 
   summarize(total_games = n()) %>% 
   arrange(desc(total_games))
@@ -93,7 +98,7 @@ clark_logs_and_games <- inner_join(subset_clark_logs, games_per_team, by = "oppo
 
 # per game anaysis
 
-clark_logs_and_games %>% 
+clark_logs_and_games <- clark_logs_and_games %>% 
   group_by(opponent) %>% 
   mutate(ppg = (total_points/total_games),
          rpg = (total_reb/total_games),
