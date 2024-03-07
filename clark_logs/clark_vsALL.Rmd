@@ -55,22 +55,52 @@ clark_logs_cleaned <- clark_logs_cleaned %>%
 
 ```
 
+Clark games against each team
+
+```{r}
+
+games_per_team <- clark_logs_cleaned %>% 
+  group_by(opponent) %>% 
+  summarize(total_games = n()) %>% 
+  arrange(desc(total_games))
+
+```
+
+
+
+
 ------------ Data exploration ---------------
 
 ### Aggregating the points
 
-```{r}
+## Try to get the per games
 
-clark_logs_cleaned %>% 
+```{r}
+#aggregate total analysis
+subset_clark_logs <- clark_logs_cleaned %>% 
   group_by(opponent) %>% 
   summarize(total_minutes = sum (mp),
             total_points = sum(pts),
             total_reb = sum(trb),
             total_ast = sum(ast),
-            
-            ) %>% 
-  arrange(desc(total_minutes))
+            total_3pm = sum(three_pm),
+            total_3pa = sum(three_pa)) %>% 
+  arrange(desc(total_points))
 
+#joining
+
+clark_logs_and_games <- inner_join(subset_clark_logs, games_per_team, by = "opponent")
+
+# per game anaysis
+
+clark_logs_and_games %>% 
+  group_by(opponent) %>% 
+  mutate(ppg = (total_points/total_games),
+         rpg = (total_reb/total_games),
+         apg = (total_ast/total_games),
+         threes_made_pg = (total_3pm/total_games),
+        threes_attempted_pg  = (total_3pa/total_games),
+        mpg = (total_minutes /total_games))
 ```
 
 
