@@ -15,16 +15,6 @@ library(htmltools)
 ```
 
 ```{r}
-# Loading data for the seaosns
-logs24 <- read_csv("https://thescoop.org/sports-data-files/wbblogs24.csv")
-logs18_24 <- read_csv("https://www.thescoop.org/sports-data-files/wbblogs1824.csv")
-
-# removing the 2023-2024 from logs_18_24 to avoid duplicates when binding. Final product should have the first few games of 23-24 season.
-logs18_24 <- logs18_24 %>% 
-  filter(Season != "2023-2024")
-
-logs <- bind_rows(logs18_24, logs24)
-
 # Loading player data from 2022-2023
 wbb23_24_rosters <- read_csv("data/wbb_rosters_2023_24.csv")
 wbb22_23_rosters <- read_csv("data/wbb_rosters_2022_23.csv")
@@ -225,7 +215,19 @@ ncaat_22_23 <- c("South Carolina", "Maryland", "Notre Dame", "UCLA", "Oklahoma",
                  "Cleveland State", "Hawaii", "Gardner-Webb", "Tennessee Tech", "Monmouth", "Stanford", "Iowa", "Duke", "Texas", "Louisville",
                  "Colorado", "Florida State", "Mississippi", "Gonzaga", "Georgia", "Middle Tennessee", "Drake", "East Carolina", "Iona", "Southern Louisiana",
                  "Southern", "Sacred Heart", "Southeastern Louisiana")
+```
 
+
+******* needs to be updated with this year's tournament field ******
+```{r}
+ncaat23_24 <- c("South Carolina", "Maryland", "Notre Dame", "UCLA", "Oklahoma", "Creighton", "Arizona", "South Florida", "Marquette", "West Virginia",
+                 "Illinois", "Mississippi State", "Portland", "Sacramento State", "Southern Utah", "Holy Cross", "Norfolk State", "Virginia Tech",
+                 "UConn", "Ohio State", "Tennessee", "Iowa State", "North Carolina", "Baylor", "Southern Cal", "South Dakota State", "Alabama", "Purdue",
+                 "St. John's", "Toledo", "Saint Louis", "James Madison", "Vermont", "Chattanooga", "Indiana", "Utah", "LSU", "Villanova",
+                 "Washington State", "Michigan", "NC State", "Oklahoma State", "Miami", "Princeton", "UNLV", "Florida Gulf Coast",
+                 "Cleveland State", "Hawaii", "Gardner-Webb", "Tennessee Tech", "Monmouth", "Stanford", "Iowa", "Duke", "Texas", "Louisville",
+                 "Colorado", "Florida State", "Mississippi", "Gonzaga", "Georgia", "Middle Tennessee", "Drake", "East Carolina", "Iona", "Southern Louisiana",
+                 "Southern", "Sacred Heart", "Southeastern Louisiana")
 ```
 
 
@@ -242,12 +244,26 @@ ncaa_yes22_23 <- ncaat_teams %>%
   filter(tourny_team_22_23 == "y") %>% 
   select(team, conference, int_players_22_23, total_22_23, int_players_22_23, int_player_perc_22_23) %>% 
   arrange(desc(int_player_perc_22_23))
-
 ```
 
 
+```{r}
+# doing the same process for 2024
+#adding column 
+ncaat_teams_both_yrs <- ncaat_teams %>%
+  mutate(tourny_team_23_24 = case_when(
+    team %in% ncaat23_24 ~ "y",
+    TRUE ~ "n"
+  ))
+
+# 23-24 teams international list
+ncaa_yes23_24 <- ncaat_teams_both_yrs %>% 
+  filter(tourny_team_23_24 == "y") %>% 
+  select(team, conference, int_players_23_24, total_23_24, int_players_23_24, int_player_perc_23_24) %>% 
+  arrange(desc(int_player_perc_23_24))
 
 
+```
 
 
 

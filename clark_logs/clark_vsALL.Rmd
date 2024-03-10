@@ -106,6 +106,8 @@ clark_logs_and_games <- clark_logs_and_games %>%
          threes_made_pg = (total_3pm/total_games),
         threes_attempted_pg  = (total_3pa/total_games),
         mpg = (total_minutes /total_games))
+
+write_csv(clark_logs_and_games, "data/cclark_logs_and_games.csv")
 ```
 
 

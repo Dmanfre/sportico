@@ -7,6 +7,7 @@ install.packages("janator")
 install.packages("tidycensus")
 install.packages("ggplot2")
 install.packages("wehoop")
+library(wehoop)
 ```
 
 ```{r}
@@ -15,8 +16,6 @@ install.packages("wehoop")
 years <-  c(2023, 2022)
 
 seasons <- load_wbb_player_box(seasons = years)
-
-Testing to see if a change happens. 
 
 ```
 
