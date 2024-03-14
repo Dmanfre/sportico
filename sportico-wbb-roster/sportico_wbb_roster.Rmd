@@ -220,14 +220,7 @@ ncaat_22_23 <- c("South Carolina", "Maryland", "Notre Dame", "UCLA", "Oklahoma",
 
 ******* needs to be updated with this year's tournament field ******
 ```{r}
-ncaat23_24 <- c("South Carolina", "Maryland", "Notre Dame", "UCLA", "Oklahoma", "Creighton", "Arizona", "South Florida", "Marquette", "West Virginia",
-                 "Illinois", "Mississippi State", "Portland", "Sacramento State", "Southern Utah", "Holy Cross", "Norfolk State", "Virginia Tech",
-                 "UConn", "Ohio State", "Tennessee", "Iowa State", "North Carolina", "Baylor", "Southern Cal", "South Dakota State", "Alabama", "Purdue",
-                 "St. John's", "Toledo", "Saint Louis", "James Madison", "Vermont", "Chattanooga", "Indiana", "Utah", "LSU", "Villanova",
-                 "Washington State", "Michigan", "NC State", "Oklahoma State", "Miami", "Princeton", "UNLV", "Florida Gulf Coast",
-                 "Cleveland State", "Hawaii", "Gardner-Webb", "Tennessee Tech", "Monmouth", "Stanford", "Iowa", "Duke", "Texas", "Louisville",
-                 "Colorado", "Florida State", "Mississippi", "Gonzaga", "Georgia", "Middle Tennessee", "Drake", "East Carolina", "Iona", "Southern Louisiana",
-                 "Southern", "Sacred Heart", "Southeastern Louisiana")
+ncaat23_24 <- c("Rice", "Richmond", "Notre Dame","Texas", "UConn", "Eastern Washington", "Presbyterian", "Iowa", "Green Bay", "UNLV", "UT Martin", "Southern Cal", "South Carolina", "South Dakota State", "Marshall", "Portland")
 ```
 
 
@@ -238,6 +231,7 @@ ncaat_teams <- all_players %>%
     team %in% ncaat_22_23 ~ "y",
     TRUE ~ "n"
   ))
+
 
 #Filtering to see what the tourney teams looked like w internationals
 ncaa_yes22_23 <- ncaat_teams %>% 
