@@ -259,6 +259,15 @@ ncaa_yes23_24 <- ncaat_teams_both_yrs %>%
 
 ```
 
+Which teams both have yes
+
+```{r}
+
+ncaat_teams_both_yrs %>% 
+  filter(tourny_team_23_24 == "y", tourny_team_22_23 == "y")
+
+```
+
 
 
 
