@@ -220,7 +220,7 @@ ncaat_22_23 <- c("South Carolina", "Maryland", "Notre Dame", "UCLA", "Oklahoma",
 
 ******* needs to be updated with this year's tournament field ******
 ```{r}
-ncaat23_24 <- c("Rice", "Richmond", "Notre Dame","Texas", "UConn", "Eastern Washington", "Presbyterian", "Iowa", "Green Bay", "UNLV", "UT Martin", "Southern Cal", "South Carolina", "South Dakota State", "Marshall", "Portland")
+ncaat23_24 <- c("Rice", "Richmond", "Notre Dame","Texas", "UConn", "Eastern Washington", "Presbyterian", "Iowa", "Green Bay", "UNLV", "UT Martin", "Southern Cal", "South Carolina", "Chattanooga", "A&M-Corpus Christi", "South Dakota State", "Marshall", "Portland")
 ```
 
 
@@ -263,7 +263,7 @@ Which teams both have yes
 
 ```{r}
 
-ncaat_teams_both_yrs %>% 
+ncaat_both_yrs_yes <- ncaat_teams_both_yrs %>% 
   filter(tourny_team_23_24 == "y", tourny_team_22_23 == "y")
 
 ```
