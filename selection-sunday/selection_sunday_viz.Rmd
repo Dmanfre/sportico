@@ -1,0 +1,54 @@
+```{r}
+ library(wehoop)
+library(tidyverse)
+```
+
+```{r}
+years <-  c(2023, 2022)
+
+seasons <- espn_wbb_teams(2023 )
+```
+
+
+loading data from derek
+```{r}
+
+teams <- read_csv("data/teams.csv")
+
+```
+
+23-24 Tournament teams list 
+******* needs to be updated with this year's tournament field ******
+```{r}
+ncaat23_24 <- c("Maine", "Rice", "Richmond", "Notre Dame","Texas", "Florida Gulf Coast", "Texas", "UConn", "Eastern Washington", "Presbyterian", "Iowa", "UC Irvine", "Middle Tennessee", "Green Bay", "Princeton", "Fairfield", "Kent State", "Norfolk State", "UNLV", "UT Martin", "Southern Cal", "South Carolina", "Chattanooga", "A&M-Corpus Christi", "Jackson State", "South Dakota State", "Marshall", "Portland", "California Baptist")
+```
+
+------ Data Exploration ---------
+** Note that spellings may be different from Derek's list to how I typed it ***
+** Check abbreviations for State **
+
+```{r}
+
+state_counts <- teams %>% 
+  filter(team %in% ncaat23_24) %>% 
+  group_by(team_state) %>% 
+  summarize(state_counts = n()) %>%   
+  arrange(desc(state_counts))
+
+```
+Conference counts
+```{r}
+
+conf_counts <- teams %>% 
+  filter(team %in% ncaat23_24) %>% 
+  group_by(conference) %>% 
+  summarize(conf_counts = n()) %>%   
+  arrange(desc(conf_counts))
+
+```
+
+
+
+
+
+

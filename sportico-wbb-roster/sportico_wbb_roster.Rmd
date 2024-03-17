@@ -14,6 +14,10 @@ library(ggtext)
 library(htmltools)
 ```
 
+Theses numbers and all attribution is from the University of Maryland's Sports Roster Data Project.
+
+
+
 ```{r}
 # Loading player data from 2022-2023
 wbb23_24_rosters <- read_csv("data/wbb_rosters_2023_24.csv")
@@ -220,7 +224,7 @@ ncaat_22_23 <- c("South Carolina", "Maryland", "Notre Dame", "UCLA", "Oklahoma",
 
 ******* needs to be updated with this year's tournament field ******
 ```{r}
-ncaat23_24 <- c("Rice", "Richmond", "Notre Dame","Texas", "UConn", "Eastern Washington", "Presbyterian", "Iowa", "Green Bay", "UNLV", "UT Martin", "Southern Cal", "South Carolina", "Chattanooga", "A&M-Corpus Christi", "South Dakota State", "Marshall", "Portland")
+ncaat23_24 <- c("Maine", "Rice", "Richmond", "Notre Dame","Texas", "Florida Gulf Coast", "Texas", "UConn", "Eastern Washington", "Presbyterian", "Iowa", "UC Irvine", "Middle Tennessee", "Green Bay", "Princeton", "Fairfield", "Kent State", "Norfolk State", "UNLV", "UT Martin", "Southern Cal", "South Carolina", "Chattanooga", "A&M-Corpus Christi", "Jackson State", "South Dakota State", "Marshall", "Portland", "California Baptist")
 ```
 
 
