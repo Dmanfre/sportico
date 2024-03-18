@@ -17,7 +17,6 @@ library(htmltools)
 Theses numbers and all attribution is from the University of Maryland's Sports Roster Data Project.
 
 
-
 ```{r}
 # Loading player data from 2022-2023
 wbb23_24_rosters <- read_csv("data/wbb_rosters_2023_24.csv")
@@ -205,26 +204,32 @@ non_us_22_23 %>%
 --------------- Labeling tournament teams -------------------
 Steps
 - on the `all_players` df, add two columns. One called ncaat23_24 and one called ncaat22_23.
-- write a case_when to put y if they were a tournament team and a n if they were not in 2023.
+- write a case_when to put y if they were a tournament team and a n if they were not in 2023... do the same for 23-24
 - Then filter teams that were a tourney team and had >0 international players.
 
 ```{r}
 # 22-23 tournament teams
 
-ncaat_22_23 <- c("South Carolina", "Maryland", "Notre Dame", "UCLA", "Oklahoma", "Creighton", "Arizona", "South Florida", "Marquette", "West Virginia",
-                 "Illinois", "Mississippi State", "Portland", "Sacramento State", "Southern Utah", "Holy Cross", "Norfolk State", "Virginia Tech",
-                 "UConn", "Ohio State", "Tennessee", "Iowa State", "North Carolina", "Baylor", "Southern Cal", "South Dakota State", "Alabama", "Purdue",
-                 "St. John's", "Toledo", "Saint Louis", "James Madison", "Vermont", "Chattanooga", "Indiana", "Utah", "LSU", "Villanova",
-                 "Washington State", "Michigan", "NC State", "Oklahoma State", "Miami", "Princeton", "UNLV", "Florida Gulf Coast",
-                 "Cleveland State", "Hawaii", "Gardner-Webb", "Tennessee Tech", "Monmouth", "Stanford", "Iowa", "Duke", "Texas", "Louisville",
-                 "Colorado", "Florida State", "Mississippi", "Gonzaga", "Georgia", "Middle Tennessee", "Drake", "East Carolina", "Iona", "Southern Louisiana",
-                 "Southern", "Sacred Heart", "Southeastern Louisiana")
+# Confirmed this now is 68 teams
+
+
+ncaat_22_23 <- c("Arizona", "Creighton", "Holy Cross", "Illinois", "Marquette", "Maryland", "Mississippi State", "Norfolk State", "Notre Dame", "Oklahoma", "Portland", "Sacramento State", "South Carolina", "South Florida", "Southern Utah", "UCLA", "West Virginia", 
+                 
+                 "Alabama", "Baylor", "Chattanooga", "Iowa State", "James Madison", "North Carolina", "Ohio State", "Purdue", "Saint Louis", "South Dakoda State", "St. John's", "Tennessee", "Toledo", "UConn", "Southern Cal", "Vermont", "Virginia Tech",
+                 
+                 "Cleveland State", "Florida Gulf Coast", "Gardner-Webb", "Hawaii", "Indiana", "LSU", "Miami", "Michigan", "Monmouth", "NC State", "Oklahoma State", "Princeton", "Tennessee Tech", "UNLV", "Utah", "Villanova", "Washington State",
+                 
+                 "Colorado", "Drake", "Duke", "East Carolina", "Florida State", "Georgia", "Gonzaga", "Iona", "Iowa", "Louisville", "Middle Tennessee", "Mississippi", "Sacred Heart", "Southeastern Louisiana", "Southern", "Stanford", "Texas")
+                 
+                
 ```
 
 
-******* needs to be updated with this year's tournament field ******
 ```{r}
-ncaat23_24 <- c("Maine", "Rice", "Richmond", "Notre Dame","Texas", "Florida Gulf Coast", "Texas", "UConn", "Eastern Washington", "Presbyterian", "Iowa", "UC Irvine", "Middle Tennessee", "Green Bay", "Princeton", "Fairfield", "Kent State", "Norfolk State", "UNLV", "UT Martin", "Southern Cal", "South Carolina", "Chattanooga", "A&M-Corpus Christi", "Jackson State", "South Dakota State", "Marshall", "Portland", "California Baptist")
+
+ncaat23_24 <- c("Sacred Heart", "Presbyterian", "Vanderbilt", "Columbia", "Auburn", "Arizona", "Holy Cross", "UT Martin", "North Carolina", "Michigan State", "Ohio State", "Maine", "Louisville", "Middle Tennessee", "South Carolina", "Duke", "Richmond", "Texas", "Drexel", "Virginia Tech", "Marshall", "LSU", "Rice", "Kansas State", "Portland", "Alabama", "Florida State", "Baylor", "Colorado", "Drake", "Iowa State", "Maryland", "Oregon State", "Eastern Washington", "Stanford", "Norfolk State", "Nebraska", "Texas A&M", "Tennessee", "Green Bay", "UConn", "Jackson State", "Indiana", "Fairfield", 
+"Kansas", "Michigan", "Notre Dame", "Kent State", "NC State", "Chattanooga", 
+"Iowa", "Syracuse", "Oklahoma", "Florida Gulf Coast", "Southern Cal", "A&M-Corpus Christi", "Mississippi", "Marquette", "West Virginia", "Princeton", "Creighton", "UNLV", "Gonzaga", "UC Irvine", "UCLA", "California Baptist", "Utah", "South Dakota State")
 ```
 
 
@@ -235,9 +240,12 @@ ncaat_teams <- all_players %>%
     team %in% ncaat_22_23 ~ "y",
     TRUE ~ "n"
   ))
+```
 
 
+```{r}
 #Filtering to see what the tourney teams looked like w internationals
+# Unsure of why this produces 67 and not 68
 ncaa_yes22_23 <- ncaat_teams %>% 
   filter(tourny_team_22_23 == "y") %>% 
   select(team, conference, int_players_22_23, total_22_23, int_players_22_23, int_player_perc_22_23) %>% 
@@ -248,6 +256,7 @@ ncaa_yes22_23 <- ncaat_teams %>%
 ```{r}
 # doing the same process for 2024
 #adding column 
+
 ncaat_teams_both_yrs <- ncaat_teams %>%
   mutate(tourny_team_23_24 = case_when(
     team %in% ncaat23_24 ~ "y",
@@ -255,6 +264,7 @@ ncaat_teams_both_yrs <- ncaat_teams %>%
   ))
 
 # 23-24 teams international list
+# Unsure of why this produces 66 teams and not 68?... Im assuming that it is the same reason the 22-23 list produced 67?
 ncaa_yes23_24 <- ncaat_teams_both_yrs %>% 
   filter(tourny_team_23_24 == "y") %>% 
   select(team, conference, int_players_23_24, total_23_24, int_players_23_24, int_player_perc_23_24) %>% 
@@ -265,6 +275,7 @@ ncaa_yes23_24 <- ncaat_teams_both_yrs %>%
 
 Which teams both have yes
 
+# This should produce 68 rows... it produced 42?
 ```{r}
 
 ncaat_both_yrs_yes <- ncaat_teams_both_yrs %>% 

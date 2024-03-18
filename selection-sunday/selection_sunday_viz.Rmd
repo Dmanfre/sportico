@@ -4,9 +4,8 @@ library(tidyverse)
 ```
 
 ```{r}
-years <-  c(2023, 2022)
 
-seasons <- espn_wbb_teams(2023 )
+teams <- espn_wbb_teams(2023 )
 ```
 
 
@@ -19,18 +18,22 @@ teams <- read_csv("data/teams.csv")
 
 23-24 Tournament teams list 
 ******* needs to be updated with this year's tournament field ******
+
+** Note that spellings may be different from Derek's list to how I typed it. Check abbreviations... st.***
+
+
 ```{r}
-ncaat23_24 <- c("Maine", "Rice", "Richmond", "Notre Dame","Texas", "Florida Gulf Coast", "Texas", "UConn", "Eastern Washington", "Presbyterian", "Iowa", "UC Irvine", "Middle Tennessee", "Green Bay", "Princeton", "Fairfield", "Kent State", "Norfolk State", "UNLV", "UT Martin", "Southern Cal", "South Carolina", "Chattanooga", "A&M-Corpus Christi", "Jackson State", "South Dakota State", "Marshall", "Portland", "California Baptist")
+teams_23_24 <- c("Maine", "Rice", "Richmond", "Notre Dame", "Florida Gulf Coast", "Texas", "UConn", "Eastern Washington", "Presbyterian", "Iowa", "UC Irvine", "Drexel", "Middle Tennessee", "Green Bay", "Princeton", "Fairfield", "Kent State", "Norfolk State", "Drake", "UNLV", "Sacred Heart", "UT Martin", "Southern Cal", "Holy Cross", "South Carolina", "Chattanooga", "A&M-Corpus Christi", "Jackson St.", "South Dakota State", "Marshall", "Portland", "California Baptist")
 ```
 
 ------ Data Exploration ---------
-** Note that spellings may be different from Derek's list to how I typed it ***
-** Check abbreviations for State **
+
+- State and conference counts.
 
 ```{r}
 
 state_counts <- teams %>% 
-  filter(team %in% ncaat23_24) %>% 
+  filter(team %in% teams_23_24) %>% 
   group_by(team_state) %>% 
   summarize(state_counts = n()) %>%   
   arrange(desc(state_counts))
@@ -40,7 +43,7 @@ Conference counts
 ```{r}
 
 conf_counts <- teams %>% 
-  filter(team %in% ncaat23_24) %>% 
+  filter(team %in% teams_23_24) %>% 
   group_by(conference) %>% 
   summarize(conf_counts = n()) %>%   
   arrange(desc(conf_counts))
