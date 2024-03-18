@@ -213,23 +213,14 @@ Steps
 # Confirmed this now is 68 teams
 
 
-ncaat_22_23 <- c("Arizona", "Creighton", "Holy Cross", "Illinois", "Marquette", "Maryland", "Mississippi State", "Norfolk State", "Notre Dame", "Oklahoma", "Portland", "Sacramento State", "South Carolina", "South Florida", "Southern Utah", "UCLA", "West Virginia", 
-                 
-                 "Alabama", "Baylor", "Chattanooga", "Iowa State", "James Madison", "North Carolina", "Ohio State", "Purdue", "Saint Louis", "South Dakoda State", "St. John's", "Tennessee", "Toledo", "UConn", "Southern Cal", "Vermont", "Virginia Tech",
-                 
-                 "Cleveland State", "Florida Gulf Coast", "Gardner-Webb", "Hawaii", "Indiana", "LSU", "Miami", "Michigan", "Monmouth", "NC State", "Oklahoma State", "Princeton", "Tennessee Tech", "UNLV", "Utah", "Villanova", "Washington State",
-                 
-                 "Colorado", "Drake", "Duke", "East Carolina", "Florida State", "Georgia", "Gonzaga", "Iona", "Iowa", "Louisville", "Middle Tennessee", "Mississippi", "Sacred Heart", "Southeastern Louisiana", "Southern", "Stanford", "Texas")
-                 
-                
+ncaat_22_23 <- c("Arizona", "Creighton", "Holy Cross", "Illinois", "Marquette", "Maryland", "Mississippi State", "Norfolk State", "Notre Dame", "Oklahoma", "Portland", "Sacramento State", "South Carolina", "South Florida", "Southern Utah", "UCLA", "West Virginia", "Alabama", "Baylor", "Chattanooga", "Iowa State", "James Madison", "North Carolina", "Ohio State", "Purdue", "Saint Louis", "South Dakota State", "St. John's", "Tennessee", "Toledo", "UConn", "Southern Cal", "Vermont", "Virginia Tech",  "Cleveland State", "Florida Gulf Coast", "Gardner-Webb", "Hawaii", "Indiana", "LSU", "Miami", "Michigan", "Monmouth", "NC State", "Oklahoma State", "Princeton", "Tennessee Tech", "UNLV", "Utah", "Villanova", "Washington State", "Colorado", "Drake", "Duke", "East Carolina", "Florida State", "Georgia", "Gonzaga", "Iona", "Iowa", "Louisville", "Middle Tennessee", "Mississippi", "Sacred Heart", "Southeastern Louisiana", "Southern", "Stanford", "Texas")
 ```
 
 
 ```{r}
 
-ncaat23_24 <- c("Sacred Heart", "Presbyterian", "Vanderbilt", "Columbia", "Auburn", "Arizona", "Holy Cross", "UT Martin", "North Carolina", "Michigan State", "Ohio State", "Maine", "Louisville", "Middle Tennessee", "South Carolina", "Duke", "Richmond", "Texas", "Drexel", "Virginia Tech", "Marshall", "LSU", "Rice", "Kansas State", "Portland", "Alabama", "Florida State", "Baylor", "Colorado", "Drake", "Iowa State", "Maryland", "Oregon State", "Eastern Washington", "Stanford", "Norfolk State", "Nebraska", "Texas A&M", "Tennessee", "Green Bay", "UConn", "Jackson State", "Indiana", "Fairfield", 
-"Kansas", "Michigan", "Notre Dame", "Kent State", "NC State", "Chattanooga", 
-"Iowa", "Syracuse", "Oklahoma", "Florida Gulf Coast", "Southern Cal", "A&M-Corpus Christi", "Mississippi", "Marquette", "West Virginia", "Princeton", "Creighton", "UNLV", "Gonzaga", "UC Irvine", "UCLA", "California Baptist", "Utah", "South Dakota State")
+ncaat23_24 <- c("Sacred Heart", "Presbyterian College", "Vanderbilt", "Columbia", "Auburn", "Arizona", "Holy Cross", "UT Martin", "North Carolina", "Michigan State", "Ohio State", "Maine", "Louisville", "Middle Tennessee", "South Carolina", "Duke", "Richmond", "Texas", "Drexel", "Virginia Tech", "Marshall", "LSU", "Rice", "Kansas State", "Portland", "Alabama", "Florida State", "Baylor", "Colorado", "Drake", "Iowa State", "Maryland", "Oregon State", "Eastern Washington", "Stanford", "Norfolk State", "Nebraska", "Texas A&M", "Tennessee", "Green Bay", "UConn", "Jackson St.", "Indiana", "Fairfield", 
+"Kansas", "Michigan", "Notre Dame", "Kent State", "NC State", "Chattanooga", "Iowa", "Syracuse", "Oklahoma", "Florida Gulf Coast", "Southern Cal", "A&M-Corpus Christi", "Mississippi", "Marquette", "West Virginia", "Princeton", "Creighton", "UNLV", "Gonzaga", "UC Irvine", "UCLA", "California Baptist", "Utah", "South Dakota State")
 ```
 
 
@@ -274,8 +265,6 @@ ncaa_yes23_24 <- ncaat_teams_both_yrs %>%
 ```
 
 Which teams both have yes
-
-# This should produce 68 rows... it produced 42?
 ```{r}
 
 ncaat_both_yrs_yes <- ncaat_teams_both_yrs %>% 
