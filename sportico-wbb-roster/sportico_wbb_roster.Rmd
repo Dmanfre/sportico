@@ -175,7 +175,7 @@ countries_23_24 <- non_us_23_24 %>%
 
 #22-23
 countries_22_23 <- non_us_22_23 %>% 
-    group_by(country_clean) %>% 
+  group_by(country_clean) %>% 
   summarize(int_players = n()) %>% 
   arrange(desc(int_players))
 
@@ -224,6 +224,11 @@ ncaat23_24 <- c("Sacred Heart", "Presbyterian College", "Vanderbilt", "Columbia"
 ```
 
 
+
+Run a mutate case-when to add the seeds next to the team names.
+
+
+
 ```{r}
 # putting a y or n if a school was a tourney team in 22-23
 ncaat_teams <- all_players %>%
@@ -255,13 +260,10 @@ ncaat_teams_both_yrs <- ncaat_teams %>%
   ))
 
 # 23-24 teams international list
-# Unsure of why this produces 66 teams and not 68?... Im assuming that it is the same reason the 22-23 list produced 67?
 ncaa_yes23_24 <- ncaat_teams_both_yrs %>% 
   filter(tourny_team_23_24 == "y") %>% 
   select(team, conference, int_players_23_24, total_23_24, int_players_23_24, int_player_perc_23_24) %>% 
   arrange(desc(int_player_perc_23_24))
-
-
 ```
 
 Which teams both have yes
@@ -272,8 +274,64 @@ ncaat_both_yrs_yes <- ncaat_teams_both_yrs %>%
 
 ```
 
+Last year no this year yes
+```{r}
+ncaat_last_no_this_yes <- ncaat_teams_both_yrs %>% 
+  filter(tourny_team_23_24 == "y", tourny_team_22_23 == "n")
+```
 
 
+total number of players in 2022-23 vs 2023-24 tournament
+
+```{r}
+
+#22-23
+total_players_22_23 <- non_us_22_23 %>% 
+  filter(team %in% ncaat_22_23) %>% 
+  summarize(total_plyers = n())
+# total players is 157
+
+#23-24
+total_players_23_24 <- non_us_23_24 %>% 
+  filter(team %in% ncaat23_24) %>% 
+  summarize(total_plyers = n())
+#total players is 149
+
+```
+
+Coutnries in the tournament
+
+```{r}
+
+#23-24
+tourney_countries_23_24 <- non_us_23_24 %>% 
+  filter(team %in% ncaat23_24) %>% 
+  group_by(country_clean) %>% 
+  summarize(int_players = n()) %>%
+  mutate(perc_23_24 = int_players/sum(int_players)*100) %>% 
+  arrange(desc(int_players))
+
+#22-23
+tourney_countries_22_23 <- non_us_22_23 %>% 
+  filter(team %in% ncaat_22_23) %>% 
+  group_by(country_clean) %>% 
+  summarize(int_players = n()) %>% 
+  mutate(perc_22_23 = int_players/sum(int_players)*100) %>% 
+  arrange(desc(int_players))
+
+```
+
+Exporting data
+```{r}
+# This year's int tourney players
+write_csv(ncaa_yes23_24, "data/ncaa_yes23_24.csv")
+
+# country counts this year
+write_csv(tourney_countries_23_24, "data/tourney_countries_23_24.csv")
+
+# total country
+write_csv(total_country, "data/total_country.csv")
 
 
+```
 
