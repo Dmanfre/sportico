@@ -224,11 +224,6 @@ ncaat23_24 <- c("Sacred Heart", "Presbyterian College", "Vanderbilt", "Columbia"
 ```
 
 
-
-Run a mutate case-when to add the seeds next to the team names.
-
-
-
 ```{r}
 # putting a y or n if a school was a tourney team in 22-23
 ncaat_teams <- all_players %>%
@@ -265,6 +260,92 @@ ncaa_yes23_24 <- ncaat_teams_both_yrs %>%
   select(team, conference, int_players_23_24, total_23_24, int_players_23_24, int_player_perc_23_24) %>% 
   arrange(desc(int_player_perc_23_24))
 ```
+
+Run a mutate case_when to add seeds to the team's in `ncaa_yes23_24`
+
+```{r}
+
+ncaa_yes23_24_seeds <- ncaa_yes23_24 %>% 
+  mutate(
+    seed = case_when(
+      team == "Sacred Heart" ~ "16",
+      team == "Presbyterian College" ~ "16",
+      team == "A&M-Corpus Christi" ~ "16",
+      team == "Holy Cross" ~ "16",
+      team == "UT Martin" ~ "16",
+      team == "Drexel" ~ "16",
+      team == "Maine" ~ "15",
+      team == "Norfolk State" ~ "15",
+      team == "Kent State" ~ "15",
+      team == "California Baptist" ~ "15",
+      team == "Rice" ~ "14",
+      team == "Eastern Washington" ~ "14",
+      team == "Jackson St." ~ "14",
+      team == "Chattanooga" ~ "14",
+      team == "Fairfield" ~ "13",
+      team == "UC Irvine" ~ "13",
+      team == "Marshall" ~ "13",
+      team == "Portland" ~ "13",
+      team == "Vanderbilt" ~ "12",
+      team == "Columbia" ~ "12",
+      team == "Florida Gulf Coast" ~ "12",
+      team == "South Dakota State" ~ "12",
+      team == "Drake" ~ "12",
+      team == "Auburn" ~ "11",
+      team == "Arizona" ~ "11",
+      team == "Middle Tennessee" ~ "11",
+      team == "Texas A&M" ~ "11",
+      team == "Green Bay" ~ "11",
+      team == "Marquette" ~ "10",
+      team == "UNLV" ~ "10",
+      team == "Richmond" ~ "10",
+      team == "Maryland" ~ "10",
+      team == "Florida State" ~ "9",
+      team == "Michigan State" ~ "9",
+      team == "Michigan" ~ "9",
+      team == "Princeton" ~ "9",
+      team == "North Carolina" ~ "8",
+      team == "Alabama" ~ "8",
+      team == "Kansas" ~ "8",
+      team == "West Virginia" ~ "8",
+      team == "Mississippi" ~ "7",
+      team == "Creighton" ~ "7",
+      team == "Duke" ~ "7",
+      team == "Iowa State" ~ "7",
+      team == "Louisville" ~ "6",
+      team == "Nebraska" ~ "6",
+      team == "Tennessee" ~ "6",
+      team == "Syracuse" ~ "6",
+      team == "Baylor" ~ "5",
+      team == "Oklahoma" ~ "5",
+      team == "Utah" ~ "5",
+      team == "Colorado" ~ "5",
+      team == "Kansas State" ~ "4",
+      team == "Virginia Tech" ~ "4",
+      team == "Indiana" ~ "4",
+      team == "Gonzaga" ~ "4",
+      team == "LSU" ~ "3",
+      team == "Oregon State" ~ "3",
+      team == "UConn" ~ "3",
+      team == "NC State" ~ "3",
+      team == "Stanford" ~ "2",
+      team == "Notre Dame" ~ "2",
+      team == "UCLA" ~ "2",
+      team == "Ohio State" ~ "2",
+      team == "Iowa" ~ "1",
+      team == "South Carolina" ~ "1",
+      team == "Southern Cal" ~ "1",
+      team == "Texas" ~ "1",
+      TRUE ~ as.character(team)))
+
+
+
+```
+
+
+
+
+
 
 Which teams both have yes
 ```{r}
