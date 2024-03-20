@@ -318,6 +318,18 @@ ncaa_yes23_24_seeds <- ncaa_yes23_24 %>%
 ```
 
 
+```{r}
+
+ncaa_yes23_24_seeds %>% 
+  group_by(seed) %>% 
+  summarize(int_players = sum(int_players_23_24)) %>% 
+  arrange(desc(int_players))
+
+```
+
+
+
+
 Which teams both have yes
 ```{r}
 
