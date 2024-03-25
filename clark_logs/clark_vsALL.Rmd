@@ -43,7 +43,7 @@ clark_logs_cleaned <- clark_logs %>%
          three_pm = x3p,
          three_pa = x3pa,
          three_fg_perc = x3p_percent) %>% 
-  slice(1:129)
+  slice(1:135)
 
 #replace NA in home_away with H
 
@@ -70,8 +70,6 @@ games_per_team <- clark_logs_cleaned %>%
   arrange(desc(total_games))
 
 ```
-
-
 
 
 ------------ Data exploration ---------------
@@ -111,6 +109,45 @@ write_csv(clark_logs_and_games, "data/cclark_logs_and_games.csv")
 ```
 
 
+Clark home vs. away
+```{r}
+clark_logs_cleaned %>% 
+  group_by(home_away) %>% 
+  summarize(total_minutes = sum (mp),
+            total_games = n(),
+            total_points = sum(pts),
+            total_reb = sum(trb),
+            total_ast = sum(ast),
+            total_3pm = sum(three_pm),
+            total_3pa = sum(three_pa)) %>% 
+  mutate(ppg = (total_points/total_games),
+         rpg = (total_reb/total_games),
+         apg = (total_ast/total_games),
+         threes_made_pg = (total_3pm/total_games),
+        threes_attempted_pg  = (total_3pa/total_games),
+        mpg = (total_minutes /total_games)) %>% 
+  arrange(desc(total_games))
+  
+```
 
+clark in NCAA T
+```{r}
 
+clark_logs_cleaned %>% 
+  filter(type != "REG", type != "CTOURN") %>% 
+  group_by(season) %>% 
+  summarize(total_minutes = sum (mp),
+            total_games = n(),
+            total_points = sum(pts),
+            total_reb = sum(trb),
+            total_ast = sum(ast),
+            total_3pm = sum(three_pm),
+            total_3pa = sum(three_pa)) %>% 
+  mutate(ppg = (total_points/total_games),
+         rpg = (total_reb/total_games),
+         apg = (total_ast/total_games),
+         threes_made_pg = (total_3pm/total_games),
+        threes_attempted_pg  = (total_3pa/total_games),
+        mpg = (total_minutes /total_games))
+```
 
