@@ -43,15 +43,24 @@ clark_logs_cleaned <- clark_logs %>%
          three_pm = x3p,
          three_pa = x3pa,
          three_fg_perc = x3p_percent) %>% 
-  slice(1:135)
+  slice(1:136)
+```
 
+
+```{r}
 #replace NA in home_away with H
 
 clark_logs_cleaned <- clark_logs_cleaned %>%
   mutate(home_away = case_when(
-    is.na(home_away) ~ "H",
+    is.na(home_away) & type == "REG" ~ "H",
+    type == "CTOURN" ~ "N",
+    type == "ROUND-64" ~ "H",
+    type == "ROUND-32" ~ "H",
     TRUE ~ home_away
   ))
+
+
+
 
 ```
 
@@ -64,7 +73,6 @@ Clark games against each team
 big10 <- c("Nebraska", "Minnesota", "Illinois", "Northwestern", "Wisconsin", "Indiana", "Purdue", "Ohio State", "Michigan", "Michigan State", "Penn State", "Rutgers", "Maryland")
 
 games_per_team <- clark_logs_cleaned %>% 
-  filter(opponent %in% big10) %>% 
   group_by(opponent) %>% 
   summarize(total_games = n()) %>% 
   arrange(desc(total_games))
@@ -80,7 +88,7 @@ games_per_team <- clark_logs_cleaned %>%
 
 ```{r}
 #aggregate total analysis
-subset_clark_logs <- clark_logs_cleaned %>% 
+totals_clark_logs <- clark_logs_cleaned %>% 
   group_by(opponent) %>% 
   summarize(total_minutes = sum (mp),
             total_points = sum(pts),
@@ -92,11 +100,11 @@ subset_clark_logs <- clark_logs_cleaned %>%
 
 #joining
 
-clark_logs_and_games <- inner_join(subset_clark_logs, games_per_team, by = "opponent")
+clark_logs_and_games <- inner_join(totals_clark_logs, games_per_team, by = "opponent")
 
 # per game anaysis
 
-clark_logs_and_games <- clark_logs_and_games %>% 
+per_game_clark_logs <- clark_logs_and_games %>% 
   group_by(opponent) %>% 
   mutate(ppg = (total_points/total_games),
          rpg = (total_reb/total_games),
@@ -104,14 +112,13 @@ clark_logs_and_games <- clark_logs_and_games %>%
          threes_made_pg = (total_3pm/total_games),
         threes_attempted_pg  = (total_3pa/total_games),
         mpg = (total_minutes /total_games))
-
-write_csv(clark_logs_and_games, "data/cclark_logs_and_games.csv")
 ```
 
 
 Clark home vs. away
 ```{r}
-clark_logs_cleaned %>% 
+clark_logs_cleaned %>%
+  filter(type == "REG") %>% 
   group_by(home_away) %>% 
   summarize(total_minutes = sum (mp),
             total_games = n(),
@@ -125,9 +132,7 @@ clark_logs_cleaned %>%
          apg = (total_ast/total_games),
          threes_made_pg = (total_3pm/total_games),
         threes_attempted_pg  = (total_3pa/total_games),
-        mpg = (total_minutes /total_games)) %>% 
-  arrange(desc(total_games))
-  
+        mpg = (total_minutes /total_games))
 ```
 
 clark in NCAA T
