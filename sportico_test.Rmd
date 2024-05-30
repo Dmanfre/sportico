@@ -15,7 +15,7 @@ library(wehoop)
 
 years <-  c(2023, 2022)
 
-seasons <- load_wbb_player_box(seasons = years)
+seasons <- cfbd_recruiting_transfer_portal(seasons = years)
 
 ```
 

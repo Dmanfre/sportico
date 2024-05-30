@@ -43,7 +43,7 @@ clark_logs_cleaned <- clark_logs %>%
          three_pm = x3p,
          three_pa = x3pa,
          three_fg_perc = x3p_percent) %>% 
-  slice(1:136)
+  slice(1:137)
 ```
 
 
@@ -58,9 +58,6 @@ clark_logs_cleaned <- clark_logs_cleaned %>%
     type == "ROUND-32" ~ "H",
     TRUE ~ home_away
   ))
-
-
-
 
 ```
 
@@ -88,7 +85,7 @@ games_per_team <- clark_logs_cleaned %>%
 
 ```{r}
 #aggregate total analysis
-totals_clark_logs <- clark_logs_cleaned %>% 
+clark_by_opp <- clark_logs_cleaned %>% 
   group_by(opponent) %>% 
   summarize(total_minutes = sum (mp),
             total_points = sum(pts),
@@ -100,7 +97,7 @@ totals_clark_logs <- clark_logs_cleaned %>%
 
 #joining
 
-clark_logs_and_games <- inner_join(totals_clark_logs, games_per_team, by = "opponent")
+clark_logs_and_games <- inner_join(clark_by_opp, games_per_team, by = "opponent")
 
 # per game anaysis
 
@@ -117,8 +114,7 @@ per_game_clark_logs <- clark_logs_and_games %>%
 
 Clark home vs. away
 ```{r}
-clark_logs_cleaned %>%
-  filter(type == "REG") %>% 
+ clark_logs_cleaned %>%
   group_by(home_away) %>% 
   summarize(total_minutes = sum (mp),
             total_games = n(),

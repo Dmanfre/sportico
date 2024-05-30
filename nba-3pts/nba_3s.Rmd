@@ -1,0 +1,49 @@
+```{r}
+library(tidyverse)
+library(janitor)
+library(lubridate)
+library(rvest)
+```
+
+
+```{r}
+season_23_24 <- nba_2324 %>% 
+  clean_names() %>% 
+  rename(team = tm,
+         three_ptm = x3p,
+         three_pa = x3pa,
+         three_percent = x3p_percent) %>% 
+  mutate(season = "2023-24")
+```
+
+First grouping and iding the number of players on two teams
+```{r}
+over_100_threes <- season_23_24 %>% 
+  filter(three_ptm >= 100) %>% 
+  arrange(desc(three_ptm))
+```
+
+Removing tots because it shows a players total threes and not their one for a specific team
+```{r}
+over_100_threes <- over_100_threes %>% 
+  filter(team != "TOT")
+
+```
+
+Now grouping to see the teams in 23-24
+```{r}
+over_100_2324 <- over_100_threes %>% 
+  group_by(team) %>% 
+  summarize(players_2324 = n()) %>% 
+  arrange(desc(players_2324))
+
+```
+
+Next step
+I want to try and scrape other years and run the same code chunks as above so I can see the amount of players with over 100 3pointers on each team. I want the final product to look like a table with teams on the y axis and season on the x axis.
+
+
+
+
+
+
