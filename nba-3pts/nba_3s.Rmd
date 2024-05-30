@@ -42,8 +42,25 @@ over_100_2324 <- over_100_threes %>%
 Next step
 I want to try and scrape other years and run the same code chunks as above so I can see the amount of players with over 100 3pointers on each team. I want the final product to look like a table with teams on the y axis and season on the x axis.
 
+```{r}
+url <- "https://www.basketball-reference.com/leagues/NBA_2023_totals.html"
 
+nba_2223 <- url |>
+  read_html() |>
+  html_table()
 
+nba_2223 <- nba_2223[[1]]
+```
+
+```{r}
+season_22_23 <- nba_2223 %>% 
+   clean_names() %>% 
+  rename(team = tm,
+         three_ptm = x3p,
+         three_pa = x3pa,
+         three_percent = x3p_percent) %>% 
+  mutate(season = "2022-23")
+```
 
 
 
